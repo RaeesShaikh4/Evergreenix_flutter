@@ -90,7 +90,7 @@ class ApiLogger {
     final formattedMessage = _formatLogMessage(title, data);
     
     if (ApiLoggerConfig.logToConsole) {
-      print(formattedMessage);
+      developer.log(formattedMessage);
     }
     
     if (ApiLoggerConfig.logToDebug) {

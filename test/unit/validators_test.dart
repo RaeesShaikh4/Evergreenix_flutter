@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:evergreenix_flutter_task/core/utils/validators.dart';
-import '../test_utils/mock_data.dart';
 
 void main() {
   group('Validators Tests', () {
@@ -263,7 +262,7 @@ void main() {
 
       test('should handle edge cases', () {
         // Very long phone number
-        final longPhone = '+91' + '2' * 20;
+        final longPhone = '+91${'2' * 20}';
         expect(Validators.validatePhone(longPhone), isNotNull);
 
         // Phone with extension

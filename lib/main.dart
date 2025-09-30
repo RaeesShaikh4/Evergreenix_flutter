@@ -1,6 +1,4 @@
 import 'package:evergreenix_flutter_task/core/constants/api_endpoints.dart';
-import 'package:evergreenix_flutter_task/view_models/signup_viewmodel.dart';
-import 'package:evergreenix_flutter_task/view_models/signin_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +8,8 @@ import 'core/constants/app_colors.dart';
 import 'core/constants/app_text_styles.dart';
 import 'core/providers/app_providers.dart';
 import 'reposatories/auth_repository.dart';
-import 'views/signup_screen.dart';
+import 'views/home_screen.dart';
+import 'views/signin_screen.dart';
 
 void main() {
   final apiClient = ApiClient(baseUrl: ApiEndpoints.baseUrl);
@@ -99,7 +98,24 @@ class MyApp extends StatelessWidget {
                 labelSmall: AppTextStyles.labelSmall,
               ),
             ),
-            home: const SignUpScreen(),
+            home: FutureBuilder<bool>(
+              future: authRepository.isLoggedIn(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                
+                if (snapshot.data == true) {
+                  return const HomeScreen();
+                } else {
+                  return const SignInScreen();
+                }
+              },
+            ),
           );
         },
       ),

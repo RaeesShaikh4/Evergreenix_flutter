@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:evergreenix_flutter_task/view_models/signup_viewmodel.dart';
-import 'package:evergreenix_flutter_task/reposatories/auth_repository.dart';
 import 'package:evergreenix_flutter_task/core/network/api_exceptions.dart';
 import '../../test_utils/test_helpers.dart';
 import '../../test_utils/mock_data.dart';

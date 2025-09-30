@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../core/utils/validators.dart';
@@ -42,7 +41,11 @@ class _SignInScreenState extends State<SignInScreen> {
     final email = _emailCtrl.text.trim();
     final password = _passwordCtrl.text;
 
-    final success = await viewModel.signIn(email: email, password: password);
+    final success = await viewModel.signIn(
+      email: email, 
+      password: password,
+      rememberMe: _rememberMe,
+    );
 
     if (success) {
       if (!mounted) return;
@@ -303,68 +306,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Widget _buildSocialSignInButtons() {
-    return Column(
-      children: [
-        _buildSocialButton(
-          text: 'Continue with Google',
-          icon: Icons.g_mobiledata,
-          onPressed: () {
-            // Implement Google sign in
-            _showComingSoonDialog('Google Sign In');
-          },
-        ),
-        AppSpacing.verticalM(),
-        _buildSocialButton(
-          text: 'Continue with Apple',
-          icon: Icons.apple,
-          onPressed: () {
-            // Implement Apple sign in
-            _showComingSoonDialog('Apple Sign In');
-          },
-        ),
-      ],
-    );
-  }
 
-  Widget _buildSocialButton({
-    required String text,
-    required IconData icon,
-    required VoidCallback onPressed,
-  }) {
-    return SizedBox(
-      width: double.infinity,
-      height: AppDimensions.buttonHeightM,
-      child: OutlinedButton(
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          side: BorderSide(color: AppColors.border),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-          ),
-          backgroundColor: AppColors.surface,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: AppColors.textPrimary,
-              size: AppDimensions.iconM,
-            ),
-            AppSpacing.horizontalM(),
-            Text(
-              text,
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildSignUpPrompt() {
     return Column(

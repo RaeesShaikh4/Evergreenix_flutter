@@ -3,7 +3,6 @@ import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 import 'package:evergreenix_flutter_task/core/network/api_client.dart';
 import 'package:evergreenix_flutter_task/core/network/api_exceptions.dart';
-import '../test_utils/test_helpers.dart';
 import '../test_utils/mock_data.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
