@@ -3,12 +3,16 @@ import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 import 'package:evergreenix_flutter_task/core/network/api_client.dart';
 import 'package:evergreenix_flutter_task/reposatories/auth_repository.dart';
+import 'package:evergreenix_flutter_task/reposatories/home_repository.dart';
+import 'package:evergreenix_flutter_task/reposatories/product_repository.dart';
 import 'package:evergreenix_flutter_task/view_models/signup_viewmodel.dart';
 import 'package:evergreenix_flutter_task/view_models/signin_viewmodel.dart';
 
 /// Mock classes for testing
 class MockApiClient extends Mock implements ApiClient {}
 class MockAuthRepository extends Mock implements AuthRepository {}
+class MockHomeRepository extends Mock implements HomeRepository {}
+class MockProductRepository extends Mock implements ProductRepository {}
 class MockHttpClient extends Mock implements http.Client {}
 
 /// Test helpers and utilities

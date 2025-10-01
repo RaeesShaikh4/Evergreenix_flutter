@@ -8,24 +8,43 @@ import 'core/constants/app_colors.dart';
 import 'core/constants/app_text_styles.dart';
 import 'core/providers/app_providers.dart';
 import 'reposatories/auth_repository.dart';
+import 'reposatories/home_repository.dart';
+import 'reposatories/product_repository.dart';
 import 'views/home_screen.dart';
 import 'views/signin_screen.dart';
+import 'views/product_detail_screen.dart';
 
 void main() {
-  final apiClient = ApiClient(baseUrl: ApiEndpoints.baseUrl);
+  final apiClient = ApiClient(
+    baseUrl: ApiEndpoints.baseUrl,
+    dummyJsonUrl: ApiEndpoints.dummyJsonUrl,
+  );
   final authRepository = AuthRepository(apiClient);
-
-  runApp(MyApp(authRepository: authRepository));
+  final homeRepository = HomeRepository(apiClient);
+  final productRepository = ProductRepository(apiClient);
+  runApp(MyApp(
+    authRepository: authRepository,
+    homeRepository: homeRepository,
+    productRepository: productRepository,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final AuthRepository authRepository;
-  const MyApp({super.key, required this.authRepository});
+  final HomeRepository homeRepository;
+  final ProductRepository productRepository;
+  
+  const MyApp({
+    super.key,
+    required this.authRepository,
+    required this.homeRepository,
+    required this.productRepository,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: AppProviders.getProviders(authRepository),
+      providers: AppProviders.getProviders(authRepository, homeRepository, productRepository),
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
         minTextAdapt: true,

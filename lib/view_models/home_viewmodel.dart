@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
+import '../models/home_products.dart';
 import '../reposatories/auth_repository.dart';
+import '../reposatories/home_repository.dart';
 
 class HomeViewModel extends ChangeNotifier {
   final AuthRepository authRepository;
+  final HomeRepository homeRepository;
   
-  HomeViewModel(this.authRepository);
+  HomeViewModel(this.authRepository, this.homeRepository);
 
   bool _isLoading = false;
+  bool _isLoadingProducts = false;
   String? _errorMessage;
   String? _userEmail;
   bool _isLoggedIn = false;
+  List<Product> _products = [];
 
-  // Getters
   bool get isLoading => _isLoading;
+  bool get isLoadingProducts => _isLoadingProducts;
   String? get errorMessage => _errorMessage;
   String? get userEmail => _userEmail;
   bool get isLoggedIn => _isLoggedIn;
+  List<Product> get products => _products;
 
-  // Initialize session data
   Future<void> initializeSession() async {
     _isLoading = true;
     notifyListeners();
@@ -36,7 +41,6 @@ class HomeViewModel extends ChangeNotifier {
     }
   }
 
-  // Logout functionality
   Future<void> logout() async {
     _isLoading = true;
     notifyListeners();
@@ -54,14 +58,37 @@ class HomeViewModel extends ChangeNotifier {
     }
   }
 
-  // Clear error message
   void clearError() {
     _errorMessage = null;
     notifyListeners();
   }
 
-  // Refresh session data
   Future<void> refreshSession() async {
     await initializeSession();
+  }
+
+  Future<void> getHomeProducts({int? limit, int? skip}) async {
+    _isLoadingProducts = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final productResponse = await homeRepository.getHomeProducts(
+        limit: limit,
+        skip: skip,
+      );
+      _products = productResponse.products;
+    } catch (e) {
+      _errorMessage = 'Failed to fetch home products: ${e.toString()}';
+      _products = [];
+    } finally {
+      _isLoadingProducts = false;
+      notifyListeners();
+    }
+  }
+
+  void clearProducts() {
+    _products = [];
+    notifyListeners();
   }
 }

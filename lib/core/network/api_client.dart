@@ -6,10 +6,12 @@ import 'package:http/http.dart' as http;
 
 class ApiClient {
   final String baseUrl;
+  final String? dummyJsonUrl;
   final Map<String, String> defaultHeaders;
 
   ApiClient({
     required this.baseUrl,
+    this.dummyJsonUrl,
     Map<String, String>? headers,
   }) : defaultHeaders =
             headers ?? {'Content-Type': 'application/json', 'AuthKey': 'test'};
@@ -173,6 +175,90 @@ class ApiClient {
       // Log error
       ApiLogger.logError(
         method: 'DELETE',
+        url: uri.toString(),
+        error: e,
+        headers: defaultHeaders,
+        duration: duration,
+      );
+      
+      rethrow;
+    }
+  }
+
+
+   Future<dynamic> getHomeProducts(String endpoint, {Map<String, String>? queryParameters}) async {
+    final uri = Uri.parse('$dummyJsonUrl$endpoint').replace(
+      queryParameters: queryParameters,
+    );
+    final startTime = DateTime.now();
+    
+    // Log request
+    ApiLogger.logRequest(
+      method: 'GET',
+      url: uri.toString(),
+      headers: defaultHeaders,
+      queryParameters: queryParameters,
+    );
+    
+    try {
+      final response = await http.get(uri, headers: defaultHeaders);
+      
+      final duration = DateTime.now().difference(startTime);
+      
+      // Log response
+      response.logResponse(
+        method: 'GET',
+        url: uri.toString(),
+        duration: duration,
+      );
+      
+      return _handleResponse(response);
+    } catch (e) {
+      final duration = DateTime.now().difference(startTime);
+      
+      // Log error
+      ApiLogger.logError(
+        method: 'GET',
+        url: uri.toString(),
+        error: e,
+        headers: defaultHeaders,
+        duration: duration,
+      );
+      
+      rethrow;
+    }
+  }
+
+  Future<dynamic> getProductDetail(String endpoint) async {
+    final uri = Uri.parse('$dummyJsonUrl$endpoint');
+    final startTime = DateTime.now();
+    
+    // Log request
+    ApiLogger.logRequest(
+      method: 'GET',
+      url: uri.toString(),
+      headers: defaultHeaders,
+    );
+    
+    try {
+      final response = await http.get(uri, headers: defaultHeaders);
+      
+      final duration = DateTime.now().difference(startTime);
+      
+      // Log response
+      response.logResponse(
+        method: 'GET',
+        url: uri.toString(),
+        duration: duration,
+      );
+      
+      return _handleResponse(response);
+    } catch (e) {
+      final duration = DateTime.now().difference(startTime);
+      
+      // Log error
+      ApiLogger.logError(
+        method: 'GET',
         url: uri.toString(),
         error: e,
         headers: defaultHeaders,
