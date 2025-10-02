@@ -108,6 +108,12 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }
 
+          if (viewModel.products.isEmpty) {
+            return const Center(
+              child: Text('No products available'),
+            );
+          }
+
           return Column(
             children: [
               Expanded(
